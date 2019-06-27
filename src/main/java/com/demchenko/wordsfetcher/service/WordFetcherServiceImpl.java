@@ -1,6 +1,8 @@
 package com.demchenko.wordsfetcher.service;
 
-import com.demchenko.wordsfetcher.service.WordFetcherService;
+import com.demchenko.wordsfetcher.bean.Word;
+import com.demchenko.wordsfetcher.repository.WordMongoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -32,14 +34,14 @@ public class WordFetcherServiceImpl implements WordFetcherService {
     }
 
     @Override
-    public String getWordFromDictionary(String word) {
+    public Word getWordFromDictionary(String word) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(headerKeyName, headerKeyValue);
         headers.set("user-agent", userAgentValue);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = restTemplate.exchange(dictionaryUrl + word, HttpMethod.GET, entity, String.class);
+        ResponseEntity<Word> response = restTemplate.exchange(dictionaryUrl + word, HttpMethod.GET, entity, Word.class);
 
         return response.getBody();
     }
